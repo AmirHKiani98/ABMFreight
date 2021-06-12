@@ -1,6 +1,7 @@
 const loadPositions = require("./loadGraph");
-const wgl = require("wgl");
+const wgl = require("w-gl");
 const createTree = require('yaqt');
+const createScene = require("./createScene/createScene");
 const path = require("ngraph.path");
 window.path = path
 window.wgl = wgl;

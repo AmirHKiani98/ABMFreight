@@ -1,5 +1,1 @@
-/*!
- * wgl v0.4.0
- * (c) 2017 Andrei Kashcha.
- * Released under the MIT License.
- */
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */

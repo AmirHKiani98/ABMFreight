@@ -19,6 +19,11 @@
     "dependencies": {
         "ngraph.graph": "^19.1.0",
         "ngraph.path": "^1.3.1",
-        "yaqt": "^1.2.1"
+        "yaqt": "^1.2.1",
+        "d3-geo": "^1.11.9",
+        "ngraph.events": "^1.2.1",
+        "pbf": "^3.2.1",
+        "tinycolor2": "^1.4.1",
+        "w-gl": "^0.10.4"
     }
 }
