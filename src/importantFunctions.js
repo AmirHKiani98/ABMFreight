@@ -1,3 +1,6 @@
+const SVGContainer = require("./createScene/SVGContainer");
+const wgl = require("w-gl");
+const queryState = require("query-state");
 const qs = queryState({
     graph: 'amsterdam-roads'
 });
@@ -164,4 +167,84 @@ function updateQueryString() {
             qs.set('toId', toId);
         }
     }, 400);
+}
+
+function getGraphBBox() {
+    return graphBBox;
+}
+
+// IMPORTANT ----------------------------------------
+
+function createScene() {
+    ensurePreviousSceneDestroyed();
+
+    let canvas = this.$refs.canvas;
+    loaded = true;
+
+    scene = wgl.scene(canvas);
+    // this.scene.setPixelRatio(2);
+    let svgConntainer = new SVGContainer(this.$refs.svg.querySelector('.scene'), updateSVGElements.bind(this));
+    scene.appendChild(svgConntainer)
+    scene.setClearColor(12 / 255, 41 / 255, 82 / 255, 1)
+        //scene.setClearColor(1, 1, 1, 1)
+
+    let bbox = getGraphBBox();
+    let initialSceneSize = bbox.width / 8;
+    scene.setViewBox({
+        left: -initialSceneSize,
+        top: -initialSceneSize,
+        right: initialSceneSize,
+        bottom: initialSceneSize,
+    })
+
+    let graph = getGraph();
+
+    let linksCount = graph.getLinksCount();
+    let lines = new wgl.WireCollection(linksCount);
+    lines.color = { r: 0.8, g: 0.8, b: 0.8, a: 0.7 }
+        // lines.color = {r: 0.1, g: 0.1, b: 0.1, a: 0.9}
+    graph.forEachLink(function(link) {
+        let from = graph.getNode(link.fromId).data;
+        let to = graph.getNode(link.toId).data
+
+        lines.add({ from, to });
+    });
+
+    scene.appendChild(lines);
+
+    scene.on('mousemove', this.onMouseMoveOverScene, this);
+    scene.on('click', this.onSceneClick, this);
+
+    let boundMouseDown = this.handleMouseDown.bind(this);
+    document.body.addEventListener('mousedown', boundMouseDown, true);
+    document.body.addEventListener('touchstart', boundMouseDown, true);
+
+    this.unsubscribeMoveEvents = function() {
+        document.body.removeEventListener('mousedown', boundMouseDown, true);
+        document.body.removeEventListener('touchstart', boundMouseDown, true);
+    }
+}
+//---------------------------------------------------
+
+function handleMouseDown(e) {
+    var s;
+    var touchId = undefined;
+    if (e.touches) {
+        let mainTouch = (e.changedTouches || e.touches)[0];
+        s = this.scene.getSceneCoordinate(mainTouch.clientX, mainTouch.clientY);
+        touchId = mainTouch.identifier;
+    } else {
+        s = this.scene.getSceneCoordinate(e.clientX, e.clientY);
+    }
+
+    let handleUnderCursor = api.getRouteHandleUnderCursor({
+        sceneX: s.x,
+        sceneY: s.y
+    }, this.scene);
+    if (handleUnderCursor) {
+        e.stopPropagation()
+        e.preventDefault()
+        handleUnderCursor.startDragging(this.scene, touchId);
+        return;
+    }
 }
