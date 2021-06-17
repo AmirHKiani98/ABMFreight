@@ -15,6 +15,8 @@ window.wgl = wgl;
 window.loadPositions = loadPositions;
 window.createTree = createTree;
 
+
+var prevHandle = null;
 var pathInfo = {
     svgPath: '',
     noPath: false
@@ -113,11 +115,9 @@ function handleMouseDown(e) {
         let mainTouch = (e.changedTouches || e.touches)[0];
         s = scene.getSceneCoordinate(mainTouch.clientX, mainTouch.clientY);
         touchId = mainTouch.identifier;
-        console.log(touchId);
     } else {
         s = scene.getSceneCoordinate(e.clientX, e.clientY);
     }
-
     let handleUnderCursor = getRouteHandleUnderCursor({
         sceneX: s.x,
         sceneY: s.y
@@ -133,6 +133,10 @@ function handleMouseDown(e) {
 function onMouseMoveOverScene(e) {
     let now = new Date();
     let handle = getRouteHandleUnderCursor(e, scene);
+    if (handle !== prevHandle) {
+        // window.getComputedStyle(document.getElementById("my_canvas"))["cursor"] = handle ? 'pointer' : ''
+        prevHandle = handle;
+    }
 }
 
 function handleSceneClick(e) {
@@ -168,7 +172,7 @@ function updateRoute() {
 
     pathInfo.noPath = path.length === 0;
     pathInfo.svgPath = getSvgPath(path);
-
+    document.getElementById("my_path").setAttribute("d", pathInfo.svgPath);
     stats.lastSearchTook = (Math.round(end * 100) / 100) + 'ms';
     stats.pathLength = getPathLength(path);
     stats.visible = true;
@@ -253,7 +257,7 @@ function getRouteHandleUnderCursor(e, scene) {
         return routeStart;
     }
     if (routeEnd.intersects(e.sceneX, e.sceneY, scale)) {
-        return routeEnd;
+        return routeEnd
     }
 }
 
