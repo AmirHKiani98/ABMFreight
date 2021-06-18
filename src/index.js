@@ -4,11 +4,11 @@ const createTree = require('yaqt');
 const makeScene = require("./createScene/createScene");
 const SVGContainer = require("./createScene/SVGContainer");
 const inverseProjector = require("./createInverseProjector");
+const CarHandler = require("./carHandler");
 const npath = require('ngraph.path');
 const path = require("ngraph.path");
 const queryState = require('query-state');
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
-
 
 window.path = path
 window.wgl = wgl;
@@ -16,6 +16,8 @@ window.loadPositions = loadPositions;
 window.createTree = createTree;
 
 
+var time = new Date();
+var carHandler = new CarHandler(10);
 var prevHandle = null;
 var pathInfo = {
     svgPath: '',
@@ -176,7 +178,7 @@ function updateRoute() {
     stats.lastSearchTook = (Math.round(end * 100) / 100) + 'ms';
     stats.pathLength = getPathLength(path);
     stats.visible = true;
-    console.log(path);
+    // console.log(path);
 }
 
 function updateQueryString() {
@@ -337,21 +339,25 @@ function setCurrentSearchFromQueryState() {
 
 function getSvgPath(points) {
     if (points.length < 1) return '';
-    // g = document.getElementById("my_g");
-
-
+    g = document.getElementById("my_g");
 
     return points.map((pt, index) => {
-        let prefix = (index === 0) ? 'M' : ''
-        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        // circle.setAttribute("cx", pt.x);
-        // circle.setAttribute("cy", pt.y);
-        // circle.setAttribute("r", 40);
-        // circle.setAttribute("stroke", "green");
-        // circle.setAttribute("stroke-width", "4");
-        // circle.setAttribute("fill", "yellow");
-        // console.log(circle);
-        // g.appendChild(circle);
+        let prefix = (index === 0) ? 'M' : '';
+        if (index == 0) {
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", pt.x);
+            circle.setAttribute("cy", pt.y);
+            circle.setAttribute("r", 40);
+            circle.setAttribute("stroke", "green");
+            circle.setAttribute("stroke-width", "4");
+            circle.setAttribute("fill", "yellow");
+            carHandler.addCar(points);
+            lastCarId = carHandler.getLastCarId();
+            circle.setAttribute("id", "circle_" + lastCarId);
+            console.log(circle);
+            g.appendChild(circle);
+        }
+
         return prefix + toPoint(pt);
     }).join(' ');
 }
@@ -359,6 +365,27 @@ function getSvgPath(points) {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+function checkCar() {
+    miliSecondsTime = Date.now();
+    carHandler.cars.forEach(element => {
+        check = carHandler.checkPassTheStopPoint(element.startPosition, element.stopPosition, element.currentPosition);
+        if (check) {
+            carHandler.updateCarStartStopPosition(element.id);
+            // console.log(newPosition);
+        } else {
+            getFunction = element.currentFormula;
+            newPosition = getFunction(miliSecondsTime);
+            console.log(newPosition);
+            circle = document.getElementById("circle_" + element.id);
+            // carHandler.updateSVG(circle, newPosition);
+            // element.currentPosition = newPosition;
+        }
+    });
+    carHandler.updateTime(miliSecondsTime);
+    window.requestAnimationFrame(checkCar);
+}
+window.requestAnimationFrame(checkCar);
 
 function toPoint(p) { return p.x + ',' + p.y }
 // getRouteHandleUnderCursor,updateSVGElements
