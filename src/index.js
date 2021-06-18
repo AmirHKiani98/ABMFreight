@@ -66,9 +66,9 @@ function createScene() {
     scene = wgl.scene(canvas);
     scene.setPixelRatio(2);
     let svgConntainer = new SVGContainer(document.getElementsByTagName("svg")[0].querySelector('.scene'), updateSVGElements);
-    scene.appendChild(svgConntainer)
-    scene.setClearColor(12 / 255, 41 / 255, 82 / 255, 1)
-        //scene.setClearColor(1, 1, 1, 1)
+    scene.appendChild(svgConntainer);
+    scene.setClearColor(12 / 255, 41 / 255, 24 / 255, 1);
+    //scene.setClearColor(1, 1, 1, 1)
 
     let initialSceneSize = bbox.width / 8;
     scene.setViewBox({
@@ -176,6 +176,7 @@ function updateRoute() {
     stats.lastSearchTook = (Math.round(end * 100) / 100) + 'ms';
     stats.pathLength = getPathLength(path);
     stats.visible = true;
+    console.log(path);
 }
 
 function updateQueryString() {
@@ -264,6 +265,7 @@ function getRouteHandleUnderCursor(e, scene) {
 
 function updateSVGElements(svgConntainer) {
     let strokeWidth = 6 / svgConntainer.scale;
+    // console.log(svgConntainer);
     document.getElementById("my_path").setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
     scale = svgConntainer.scale / scene.getPixelRatio();
 }
@@ -327,17 +329,29 @@ function setCurrentSearchFromQueryState() {
 
     let fromId = qs.get('fromId');
     let toId = qs.get('toId');
-    let from = graph.getNode(fromId)
-    let to = graph.getNode(toId)
-    if (from) routeStart.setFrom(from)
-    if (to) routeEnd.setFrom(to)
+    let from = graph.getNode(fromId);
+    let to = graph.getNode(toId);
+    if (from) routeStart.setFrom(from);
+    if (to) routeEnd.setFrom(to);
 }
 
 function getSvgPath(points) {
     if (points.length < 1) return '';
+    // g = document.getElementById("my_g");
+
+
 
     return points.map((pt, index) => {
         let prefix = (index === 0) ? 'M' : ''
+        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        // circle.setAttribute("cx", pt.x);
+        // circle.setAttribute("cy", pt.y);
+        // circle.setAttribute("r", 40);
+        // circle.setAttribute("stroke", "green");
+        // circle.setAttribute("stroke-width", "4");
+        // circle.setAttribute("fill", "yellow");
+        // console.log(circle);
+        // g.appendChild(circle);
         return prefix + toPoint(pt);
     }).join(' ');
 }
