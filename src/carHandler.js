@@ -2,7 +2,7 @@ class CarHandler {
     constructor(v) {
         this.cars = [];
         this.lastCarId = 0;
-        this.v;
+        this.v = v;
         this.lastTime = Date.now();
     }
     addCar(data) {
@@ -71,10 +71,10 @@ class CarHandler {
     }
     updateCarStartStopPosition(carId) {
         for (let i = 0; i < this.cars.length; i++) {
-            car = this.cars[i];
+            var car = this.cars[i];
             if (car.id == carId) {
                 this.cars[i].startPositionIndex += 1;
-                if (this.cars[i].startPositionIndex !== this.cars[i].data.length) {
+                if (this.cars[i].startPositionIndex !== this.cars[i].data.length - 2) {
                     this.cars[i].startPosition = car.data[this.cars[i].startPositionIndex];
                     this.cars[i].stopPosition = car.data[this.cars[i].startPositionIndex + 1];
                     this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].currentPosition, this.v);

@@ -17,7 +17,7 @@ window.createTree = createTree;
 
 
 var time = new Date();
-var carHandler = new CarHandler(10);
+var carHandler = new CarHandler(0.1);
 var prevHandle = null;
 var pathInfo = {
     svgPath: '',
@@ -378,8 +378,8 @@ function checkCar() {
             newPosition = getFunction(miliSecondsTime);
             console.log(newPosition);
             circle = document.getElementById("circle_" + element.id);
-            // carHandler.updateSVG(circle, newPosition);
-            // element.currentPosition = newPosition;
+            carHandler.updateSVG(circle, newPosition);
+            element.currentPosition = newPosition;
         }
     });
     carHandler.updateTime(miliSecondsTime);
