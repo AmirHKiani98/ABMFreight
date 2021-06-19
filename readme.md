@@ -9,7 +9,7 @@ I've been searching for a suitable and appropriate algorithm for finding the bes
 This single js([javascript](https://www.javascript.com/)) file can be used to add cars agents to the map at the point you want
 ## Speed
 As you may know, the speed in two dimensions can be calculated as:
-
+!['Example Rig Presets'](https://latex.codecogs.com/svg.latex?\Large&space;(\frac{dx}{dt})^2+(\frac{dy}{dt})^2=v^2)
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;(\frac{dx}{dt})^2+(\frac{dy}{dt})^2=v^2" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 And also if we have a straight way, so we have a triangle like this:
