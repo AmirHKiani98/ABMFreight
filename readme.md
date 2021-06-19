@@ -1,5 +1,5 @@
 # About this package
-This a package is a handler for **Agent-Based Model Simulating** in Urban Freight, Transportation
+This a package is a handler for **Agent-Based Model Simulating** for Urban Freight, Transportation
 
 # About the graphs
 
