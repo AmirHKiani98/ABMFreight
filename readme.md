@@ -1,7 +1,7 @@
 # About this package
 This a package is a handler for **Agent-Based Model Simulating** for Urban Freight, Transportation
 
-<img src ="./readme files/map_gif.gif">
+<img src ="./readme files/map_gif.gif" alt="Loading Gif">
 
 # About the graphs
 
