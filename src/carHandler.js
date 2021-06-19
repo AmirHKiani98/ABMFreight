@@ -41,15 +41,29 @@ class CarHandler {
         var lastTime = this.lastTime;
         var currentX = currentPosition.x;
         var currentY = currentPosition.y;
+        var signInX = x1 - x0;
+        if (signInX > 0) {
+            signInX = +1;
+        } else if (signInX < 0) {
+            signInX = -1;
+        }
         if (x1 - x0 == 0) {
             var xInit = 0;
         } else {
-            var xInit = v / (((((y1 - y0) / (x1 - x0)) ** 2) + 1) ** 0.5);
+            var xInit = signInX * v / (((((y1 - y0) / (x1 - x0)) ** 2) + 1) ** 0.5);
         }
+
+        var signInY = y1 - y0;
+        if (signInY > 0) {
+            signInY = +1;
+        } else if (signInY < 0) {
+            signInY = -1;
+        }
+
         if (y1 - y0 == 0) {
             var yInit = 0;
         } else {
-            var yInit = v / (((((x1 - x0) / (y1 - y0)) ** 2) + 1) ** 0.5);
+            var yInit = signInY * v / (((((x1 - x0) / (y1 - y0)) ** 2) + 1) ** 0.5);
         }
 
         function getFormula(time) {
@@ -62,7 +76,7 @@ class CarHandler {
     }
     checkPassTheStopPoint(startPosition, stopPosition, currentPosition) {
         var distance = ((startPosition.x - stopPosition.x) ** 2 + (startPosition.y - stopPosition.y) ** 2) ** 0.5;
-        var checkDistance = ((currentPosition.x - stopPosition.x) ** 2 + (currentPosition.y - stopPosition.y) ** 2) ** 0.5;
+        var checkDistance = ((currentPosition.x - startPosition.x) ** 2 + (currentPosition.y - startPosition.y) ** 2) ** 0.5;
         if (checkDistance > distance) {
             return true;
         } else {
@@ -73,13 +87,13 @@ class CarHandler {
         for (let i = 0; i < this.cars.length; i++) {
             var car = this.cars[i];
             if (car.id == carId) {
-                this.cars[i].startPositionIndex += 1;
                 if (this.cars[i].startPositionIndex !== this.cars[i].data.length - 2) {
+                    this.cars[i].startPositionIndex += 1;
                     this.cars[i].startPosition = car.data[this.cars[i].startPositionIndex];
                     this.cars[i].stopPosition = car.data[this.cars[i].startPositionIndex + 1];
-                    this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].currentPosition, this.v);
+                    this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].startPosition, this.v);
                     break;
-                }
+                } else {}
             }
         }
     }
@@ -97,5 +111,3 @@ class CarHandler {
     }
 }
 module.exports = CarHandler;
-// check = new CarHandler(10);
-// console.log(check.updateEquation({ x: 10, y: 20 }, { x: 12, y: 22 }, { x: 11, y: 21 }, 10)(new Date().getTime() + 0.01));

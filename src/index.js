@@ -372,11 +372,9 @@ function checkCar() {
         check = carHandler.checkPassTheStopPoint(element.startPosition, element.stopPosition, element.currentPosition);
         if (check) {
             carHandler.updateCarStartStopPosition(element.id);
-            // console.log(newPosition);
         } else {
             getFunction = element.currentFormula;
             newPosition = getFunction(miliSecondsTime);
-            console.log(newPosition);
             circle = document.getElementById("circle_" + element.id);
             carHandler.updateSVG(circle, newPosition);
             element.currentPosition = newPosition;
