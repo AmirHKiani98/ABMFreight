@@ -25,22 +25,23 @@ So, if we have the first and the last point coordinates, we can say:
 
 Which can be write as:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;dx=\frac{\Delta x}{\Delta y}dy" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;dx=\frac{\Delta%20x}{\Delta%20y}dy" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 So, we can use this last equation in the first equation mentioned before:
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{\Delta x^2}{\Delta y^2}dy(\frac{dy}{dt})^2+(\frac{dy}{dt})^2=v^2" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{\Delta%20x^2}{\Delta%20y^2}dy(\frac{dy}{dt})^2+(\frac{dy}{dt})^2=v^2" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 <br>
 <br>
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;|\frac{dy}{dt}| = \frac{v}{(\sqrt{\frac{\Delta x^2}{\Delta y^2} + 1})}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;|\frac{dy}{dt}|%20=%20\frac{v}{(\sqrt{\frac{\Delta%20x^2}{\Delta%20y^2}%20+%201})}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 And finally we have:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;y_2 = y_1 + \frac{v}{(\sqrt{\frac{\Delta x^2}{\Delta y^2} + 1})} (t_2 - t_1)" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;y_2%20=%20y_1%20+%20\frac{v}{(\sqrt{\frac{\Delta%20x^2}{\Delta%20y^2}%20+%201})}%20(t_2%20-%20t_1)" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 The mentioned equations can be used for x direction. So we should have:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;x_2 = x_1 + \frac{v}{(\sqrt{\frac{\Delta y^2}{\Delta x^2} + 1})} (t_2 - t_1)" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;x_2%20=%20x_1%20+%20\frac{v}{(\sqrt{\frac{\Delta%20y^2}{\Delta%20x^2}%20+%201})}%20(t_2%20-%20t_1)" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
+BUT, do not forget, now we have tha absolute values which is not completely the correct answers. in other words, the sign of direction has been neglected. so we just need to check if the diffrential in axis is positive or not. Then multiply this sign in the achieved equations.
 # How to use?
 After cloning this repository, open Terminal(in Mac) or Command Prompt(in Windows), go to the root directory of downloaded repository and run bellow code:
 ```
