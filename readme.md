@@ -28,6 +28,7 @@ Which can be write as:
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;dx=\frac{\Delta%20x}{\Delta%20y}dy" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 So, we can use this last equation in the first equation mentioned before:
+
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{\Delta%20x^2}{\Delta%20y^2}dy(\frac{dy}{dt})^2+(\frac{dy}{dt})^2=v^2" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 <br>
 <br>
