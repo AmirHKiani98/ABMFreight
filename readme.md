@@ -1,6 +1,8 @@
 # About this package
 This a package is a handler for **Agent-Based Model Simulating** for Urban Freight, Transportation
 
+<img src ="./readme files/map_gif.gif">
+
 # About the graphs
 
 I've been searching for a suitable and appropriate algorithm for finding the best path between nodes which achieved from the OSM ([Open Street Map](https://www.openstreetmap.org/)) API ([Application Programming Interface](https://en.wikipedia.org/wiki/API)). Finally I found some algorithms such as [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm), [Greedy](https://en.wikipedia.org/wiki/Greedy_algorithm), [Bidircetional A*](https://www.researchgate.net/publication/46434387_Yet_another_bidirectional_algorithm_for_shortest_paths) and other algorithms. The most efficient one was Bidirectional A*. I used a repository which [Anvaka](https://github.com/anvaka) wrote in javascript and VUE framework. Since I do not have any experience working in VUE environment, so I changed the codes into pure HTML, CSS and javascript. I update this repository gradually, but you can use Bidirectional A* method without changing the main code.
