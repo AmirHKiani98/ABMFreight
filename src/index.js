@@ -8,9 +8,13 @@ const CarHandler = require("./carHandler");
 const npath = require('ngraph.path');
 const path = require("ngraph.path");
 const queryState = require('query-state');
+const fs = require("fs");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 
-window.path = path
+fs.readFile("./maps/new.txt", "utf-8", (error, buff) => {
+    console.log(buff.toString());
+});
+window.path = path;
 window.wgl = wgl;
 window.loadPositions = loadPositions;
 window.createTree = createTree;
