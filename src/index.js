@@ -5,15 +5,14 @@ const makeScene = require("./createScene/createScene");
 const SVGContainer = require("./createScene/SVGContainer");
 const inverseProjector = require("./createInverseProjector");
 const CarHandler = require("./carHandler");
-const npath = require('ngraph.path');
+// const npath = require('ngraph.path');
 const path = require("ngraph.path");
 const queryState = require('query-state');
-const fs = require("fs");
+const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 
-fs.readFile("./maps/new.txt", "utf-8", (error, buff) => {
-    console.log(buff.toString());
-});
+
+
 window.path = path;
 window.wgl = wgl;
 window.loadPositions = loadPositions;
@@ -50,14 +49,16 @@ var bbox = null;
 
 
 var tehran = loadPositions("maps/teh");
-const projector = inverseProjector(51.3107924, 35.71149135);
+var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
     graph = loaded.graph;
     initPathfinders(graph);
     bbox = loaded.graphBBox;
     createScene();
-})
+    const boundary = readBoundary("./maps/teh.bond.json");
+    projector = inverseProjector(boundary.cx, boundary.cy);
+});
 
 
 
@@ -73,7 +74,7 @@ function createScene() {
     scene.setPixelRatio(2);
     let svgConntainer = new SVGContainer(document.getElementsByTagName("svg")[0].querySelector('.scene'), updateSVGElements);
     scene.appendChild(svgConntainer);
-    scene.setClearColor(12 / 255, 41 / 255, 24 / 255, 1);
+    scene.setClearColor(16 / 255, 16 / 255, 16 / 255, 1);
     //scene.setClearColor(1, 1, 1, 1)
 
     let initialSceneSize = bbox.width / 8;
@@ -87,7 +88,7 @@ function createScene() {
 
     let linksCount = graph.getLinksCount();
     let lines = new wgl.WireCollection(linksCount);
-    lines.color = { r: 0.8, g: 0.8, b: 0.8, a: 0.7 }
+    lines.color = { r: 71 / 255, g: 71 / 255, b: 71 / 255, a: 0.7 }
         // lines.color = {r: 0.1, g: 0.1, b: 0.1, a: 0.9}
     graph.forEachLink(function(link) {
         let from = graph.getNode(link.fromId).data;
@@ -128,6 +129,7 @@ function handleMouseDown(e) {
         sceneX: s.x,
         sceneY: s.y
     }, scene);
+    console.log(s);
     if (handleUnderCursor) {
         e.stopPropagation()
         e.preventDefault()
@@ -140,10 +142,11 @@ function onMouseMoveOverScene(e) {
     let now = new Date();
     let handle = getRouteHandleUnderCursor(e, scene);
     if (handle !== prevHandle) {
-        // window.getComputedStyle(document.getElementById("my_canvas"))["cursor"] = handle ? 'pointer' : ''
         prevHandle = handle;
     }
 }
+
+
 
 function handleSceneClick(e) {
     if (!routeStart.visible) {
@@ -301,19 +304,19 @@ function dataDistance(a, b) {
 
 function initPathfinders(graph) {
     pathFindersLookup = {
-        'a-greedy-star': npath.aGreedy(graph, {
+        'a-greedy-star': path.aGreedy(graph, {
             distance: distance,
             heuristic: distance
         }),
-        'nba': npath.nba(graph, {
+        'nba': path.nba(graph, {
             distance: distance,
             heuristic: distance
         }),
-        'astar-uni': npath.aStar(graph, {
+        'astar-uni': path.aStar(graph, {
             distance: distance,
             heuristic: distance
         }),
-        'dijkstra': npath.aStar(graph, {
+        'dijkstra': path.aStar(graph, {
             distance: distance
         }),
     }
