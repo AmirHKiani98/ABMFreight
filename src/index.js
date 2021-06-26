@@ -13,8 +13,11 @@ const queryState = require('query-state');
 const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 
-
-
+svgConntainerWays = null;
+startNodeCheck = false;
+stopNodeCheck = false;
+startNodeCoord = null;
+stopNodeCoord = null;
 window.path = path;
 window.wgl = wgl;
 window.loadPositions = loadPositions;
@@ -79,8 +82,8 @@ function createScene() {
 
     scene = wgl.scene(canvas);
     scene.setPixelRatio(2);
-    let svgConntainer = new SVGContainer(document.getElementsByTagName("svg")[0].querySelector('.scene'), updateSVGElements);
-    scene.appendChild(svgConntainer);
+    svgConntainerWays = new SVGContainer(document.getElementsByTagName("svg")[0].querySelector('.scene'), updateSVGElements);
+    scene.appendChild(svgConntainerWays);
     scene.setClearColor(16 / 255, 16 / 255, 16 / 255, 1);
     //scene.setClearColor(1, 1, 1, 1)
 
@@ -137,9 +140,8 @@ function handleMouseDown(e) {
         sceneY: s.y
     }, scene);
 
-    a = mainProj(51.3331463850494, 35.699889);
-    console.log(a);
-    console.log(a.x - s.x, a.y - s.y);
+    a = inverseProj(s.x, s.y);
+    setNode(findNearestPoint(s.x, s.y));
     if (handleUnderCursor) {
         e.stopPropagation()
         e.preventDefault()
@@ -160,7 +162,6 @@ function onMouseMoveOverScene(e) {
 
 
 function handleSceneClick(e) {
-    console.log(e);
     if (!routeStart.visible) {
         setRoutePointFormEvent(e, routeStart);
     } else if (!routeEnd.visible) {
@@ -197,7 +198,6 @@ function updateRoute() {
     stats.lastSearchTook = (Math.round(end * 100) / 100) + 'ms';
     stats.pathLength = getPathLength(path);
     stats.visible = true;
-    // console.log(path);
 }
 
 function updateQueryString() {
@@ -286,9 +286,9 @@ function getRouteHandleUnderCursor(e, scene) {
 
 function updateSVGElements(svgConntainer) {
     let strokeWidth = 6 / svgConntainer.scale;
-    // console.log(svgConntainer);
     document.getElementById("my_path").setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
     scale = svgConntainer.scale / scene.getPixelRatio();
+    updatePathsStrokes();
 }
 
 function findPath(fromId, toId) {
@@ -358,22 +358,12 @@ function setCurrentSearchFromQueryState() {
 
 function getSvgPath(points) {
     if (points.length < 1) return '';
-    g = document.getElementById("my_g");
+
 
     return points.map((pt, index) => {
         let prefix = (index === 0) ? 'M' : '';
         if (index == 0) {
-            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle.setAttribute("cx", pt.x);
-            circle.setAttribute("cy", pt.y);
-            circle.setAttribute("r", 40);
-            circle.setAttribute("stroke", "green");
-            circle.setAttribute("stroke-width", "4");
-            circle.setAttribute("fill", "yellow");
-            carHandler.addCar(points);
-            lastCarId = carHandler.getLastCarId();
-            circle.setAttribute("id", "circle_" + lastCarId);
-            g.appendChild(circle);
+            makeCircle(pt.x, pt.y, points);
         }
 
         return prefix + toPoint(pt);
@@ -401,7 +391,79 @@ function checkCar() {
     carHandler.updateTime(miliSecondsTime);
     window.requestAnimationFrame(checkCar);
 }
+
 window.requestAnimationFrame(checkCar);
+
+function makeCircle(x, y, points) {
+    g = document.getElementById("my_g");
+    var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", x);
+    circle.setAttribute("cy", y);
+    circle.setAttribute("r", 40);
+    circle.setAttribute("stroke", "green");
+    circle.setAttribute("stroke-width", "4");
+    circle.setAttribute("fill", "yellow");
+    carHandler.addCar(points);
+    lastCarId = carHandler.getLastCarId();
+    circle.setAttribute("id", "circle_" + lastCarId);
+    g.appendChild(circle);
+}
+
+function makeWay(fromId, toId) {
+    let path = findPath(fromId, toId);
+    let svgPath = getSvgPath(path);
+    let pathSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    pathSvgElement.setAttribute("d", svgPath);
+    pathSvgElement.setAttribute("stroke", "blue");
+    pathSvgElement.setAttribute("fill", "transparent");
+    strokeWidth = 6 / svgConntainerWays.scale;
+    pathSvgElement.setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
+    pathSvgElement.setAttribute("class", "car_path");
+    // ToDo - Change here if you dont want to paint circle (car) or something else happend!
+
+    g = document.getElementById("my_g");
+    g.insertBefore(pathSvgElement, g.lastChild);
+
+    // document.getElementById("my_path").setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
+}
+
+
+
+function startNode(e) {
+    stopNodeCheck = false;
+    startNodeCheck = true;
+}
+
+function stopNode(e) {
+    stopNodeCheck = true;
+    startNodeCheck = false;
+}
+document.getElementById("start_node").addEventListener("click", startNode);
+document.getElementById("stop_node").addEventListener("click", stopNode);
+
+function setNode(point) {
+    if (stopNodeCheck == false && startNodeCheck == true && stopNodeCoord == null) {
+        stopNodeCoord = point.id;
+    } else if (startNodeCheck == false && stopNodeCheck == true && startNodeCoord == null) {
+        startNodeCoord = point.id;
+    }
+    if (startNodeCoord !== null && stopNodeCoord !== null) {
+        makeWay(startNodeCoord, stopNodeCoord);
+        startNodeCoord = null;
+        stopNodeCoord = null;
+        stopNodeCheck = false;
+        startNodeCheck = false;
+    }
+}
+
+function updatePathsStrokes() {
+    var allPaths = document.getElementsByClassName("car_path");
+    var strokeWidth = 6 / svgConntainerWays.scale;
+    for (let i = 0; i < allPaths.length; i++) {
+        const element = allPaths[i];
+        element.setAttributeNS(null, "stroke-width", strokeWidth + "px");
+    }
+}
 
 function toPoint(p) { return p.x + ',' + p.y }
 // getRouteHandleUnderCursor,updateSVGElements

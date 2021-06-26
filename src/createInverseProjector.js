@@ -12,7 +12,6 @@ function createProjector(fileAddress, r) {
         var projector = d3geo.geoMercator()
             .center([lonLatBbox.cx, lonLatBbox.cy])
             .scale(r)
-
         return function(lon, lat) {
             q[0] = lon;
             q[1] = lat;
