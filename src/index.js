@@ -1,5 +1,7 @@
 const loadPositions = require("./loadGraph");
 const wgl = require("w-gl");
+const request = require("./request");
+const readFile = require("./readFile");
 const createTree = require('yaqt');
 const makeScene = require("./createScene/createScene");
 const SVGContainer = require("./createScene/SVGContainer");
@@ -44,7 +46,8 @@ let routeEnd = new RouteHandleViewModel(updateRoute, findNearestPoint);
 var hetTestTree = null;
 var graph = null;
 var bbox = null;
-
+var mainProj = null;
+var inverseProj = null;
 
 
 
@@ -56,8 +59,12 @@ tehran.then((loaded) => {
     initPathfinders(graph);
     bbox = loaded.graphBBox;
     createScene();
-    const boundary = readBoundary("./maps/teh.bond.json");
-    projector = inverseProjector(boundary.cx, boundary.cy);
+    inverseProjector("./maps/teh.bond.json").then((projector) => {
+        inverseProj = projector;
+    });
+    pointToMapProjector("./maps/teh.bond.json").then((projector) => {
+        mainProj = projector;
+    });
 });
 
 
@@ -129,7 +136,10 @@ function handleMouseDown(e) {
         sceneX: s.x,
         sceneY: s.y
     }, scene);
-    console.log(s);
+
+    a = mainProj(51.3331463850494, 35.699889);
+    console.log(a);
+    console.log(a.x - s.x, a.y - s.y);
     if (handleUnderCursor) {
         e.stopPropagation()
         e.preventDefault()
@@ -148,7 +158,9 @@ function onMouseMoveOverScene(e) {
 
 
 
+
 function handleSceneClick(e) {
+    console.log(e);
     if (!routeStart.visible) {
         setRoutePointFormEvent(e, routeStart);
     } else if (!routeEnd.visible) {
@@ -361,7 +373,6 @@ function getSvgPath(points) {
             carHandler.addCar(points);
             lastCarId = carHandler.getLastCarId();
             circle.setAttribute("id", "circle_" + lastCarId);
-            console.log(circle);
             g.appendChild(circle);
         }
 

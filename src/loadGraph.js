@@ -20,9 +20,9 @@ function loadPositions(filePath, progress) {
     //   graph.addNode(2, { x: 100, y: 0 });
     //   graph.addLink(1, 2);
     //   points = [-100, 0, 100, 0];
-    //   links = [1, 2]
-    //   graphBBox.addPoint(-100, 0)
-    //   graphBBox.addPoint(100, 0)
+    //   links = [1, 2];
+    //   graphBBox.addPoint(-100, 0);
+    //   graphBBox.addPoint(100, 0);
 
     //   progress.pointsReady = true;
     //   progress.linksReady = true;
@@ -46,13 +46,12 @@ function loadPositions(filePath, progress) {
     function setPositions(buffer) {
         points = new Int32Array(buffer);
         console.log('Downloaded nodes: ' + points.length / 2);
-
         return initNodes(points);
     }
 
     function initNodes(points) {
         console.time('add nodes to graph');
-        //progress.message = 'Adding nodes to graph'
+        //progress.message = 'Adding nodes to graph';
 
         return new Promise((resolve) => {
             asyncFor(points, addPointToGraph, () => {

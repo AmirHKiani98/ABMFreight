@@ -10,8 +10,9 @@
         "none"
     ],
     "devDependencies": {
-        "webpack": "^5.38.1",
         "rafor": "^1.0.2",
+        "raw-loader": "^4.0.2",
+        "webpack": "^5.38.1",
         "webpack-cli": "^3.2.3"
     },
     "author": "none",

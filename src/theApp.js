@@ -10,6 +10,6 @@ var loadPositions = window.loadPositions;
 var tehran = loadPositions("maps/teh");
 tehran.then((loaded) =>
     loaded.graph.forEachNode((node) =>
-        console.log(node)
+        (node)
     )
 )
