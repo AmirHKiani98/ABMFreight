@@ -3,6 +3,7 @@ This package is a handler for **Agent-Based Model Simulating** in urban freights
 
 <img src ="./readme files/map_gif.gif" alt="Loading Gif">
 <a href="https://colab.research.google.com/drive/1KBMvzO4X0vVCrM3Tz1WtCO5TeJs72mNg?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+
 # Introduction
 
 We've been searching for a suitable and appropriate algorithm and package for finding the best path between nodes achieved from the OSM ([Open Street Map](https://www.openstreetmap.org/)) API ([Application Programming Interface](https://en.wikipedia.org/wiki/API)). Finally I found some algorithms such as [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm), [Greedy](https://en.wikipedia.org/wiki/Greedy_algorithm), [Bidircetional A*](https://www.researchgate.net/publication/46434387_Yet_another_bidirectional_algorithm_for_shortest_paths) and other algorithms. The most efficient one was Bidirectional A*. I used a few packages which mentioned in **Package.json**. I update this repository gradually, but you can use Bidirectional A* method without changing the main code.
