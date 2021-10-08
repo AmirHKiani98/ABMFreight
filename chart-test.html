@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <script src="/assets/chartjs/chart.min.js"></script>
+  <script src="/assets/jquery/jquery.min.js"></script>
+</head>
+<body>
+  <canvas id="updating-chart" width="500" height="300"></canvas>
+ 
+</body>
+<script>
+    var ctx = document.getElementById('updating-chart').getContext('2d'); // 2d context
+    // <block:setup:1>
+    const labels = [
+        1,3,4,5,6,7
+    ];
+    const data = {
+    datasets: [{
+        label: 'My First dataset',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        labels: labels,
+        data: [0, 10, 5, 2, 20, 30],
+        // borderColor: 'black',
+        // borderWidth: 1,
+        // pointBackgroundColor: ['#000', '#00bcd6', '#d300d6'],
+        // pointBorderColor: ['#000', '#00bcd6', '#d300d6'],
+        pointRadius: 5,
+        pointHoverRadius: 5,
+        fill: false,
+        tension: 0,
+        showLine: true,
+        yAxisID: 'y2',
+
+    },{
+            label: 'Dataset 2',
+            labels: [1,2,100,14],
+            data: [1,2,100,4],
+            borderColor: 'rgb(255, 99, 132)',
+            yAxisID: 'y1',
+        }],
+    
+    };
+    // </block:setup>
+
+    // <block:config:0>
+    const config = {
+    type: 'scatter',
+    data: data,
+    options: {
+        scales:{
+            y1:{
+                display:false
+            },
+            y2:{
+                display:true
+            }
+        }
+    }
+    };
+    // </block:config>
+
+    // module.exports = {
+    // actions: [],
+    // config: config,
+    // };
+    var myChart = new Chart(
+        ctx,
+        config
+    );
+    
+    $("body").click((e)=>{
+        addData(myChart, "fuck", 234);
+        console.log(myChart);
+    })
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update("none");
+    }
+
+
+</script>
+</html>

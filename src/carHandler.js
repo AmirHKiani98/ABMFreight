@@ -1,3 +1,4 @@
+const Car = require("./car");
 class CarHandler {
     constructor(v) {
         this.cars = [];
@@ -5,8 +6,9 @@ class CarHandler {
         this.v = v;
         this.lastTime = Date.now();
     }
-    addCar(data) {
-        let newCar = { id: this.getNewId(), startPositionIndex: 0, startPosition: data[0], stopPosition: data[1], currentPosition: data[0], currentFormula: this.updateEquation(data[0], data[1], data[0], this.v), data: data };
+    addCar(data, fuelConsumption = 50, currentFuel = 50, velocity = 0.1) {
+        // let newCar = { id: this.getNewId(), startPositionIndex: 0, startPosition: data[0], stopPosition: data[1], currentPosition: data[0], currentFormula: this.updateEquation(data[0], data[1], data[0], this.v), data: data };
+        let newCar = new Car(this.getNewId(), data[0], data[1], data[0], this.updateEquation(data[0], data[1], data[0], velocity), data, 0, fuelConsumption, currentFuel, velocity);
         this.cars.push(newCar);
     }
     removeCar(carId) {
@@ -91,7 +93,9 @@ class CarHandler {
                     this.cars[i].startPositionIndex += 1;
                     this.cars[i].startPosition = car.data[this.cars[i].startPositionIndex];
                     this.cars[i].stopPosition = car.data[this.cars[i].startPositionIndex + 1];
-                    this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].startPosition, this.v);
+                    let velocity = this.cars[i].velocity;
+                    console.log(velocity);
+                    this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].startPosition, velocity);
                     break;
                 } else {}
             }

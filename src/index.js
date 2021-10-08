@@ -58,7 +58,9 @@ var tehran = loadPositions("maps/teh");
 var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
+    console.log(loaded.points)
     graph = loaded.graph;
+    // console.log(graph);
     initPathfinders(graph);
     bbox = loaded.graphBBox;
     createScene();
@@ -68,6 +70,7 @@ tehran.then((loaded) => {
     pointToMapProjector("./maps/teh.bond.json").then((projector) => {
         mainProj = projector;
     });
+
 });
 
 
@@ -103,7 +106,6 @@ function createScene() {
     graph.forEachLink(function(link) {
         let from = graph.getNode(link.fromId).data;
         let to = graph.getNode(link.toId).data
-
         lines.add({ from, to });
     });
 
@@ -141,6 +143,7 @@ function handleMouseDown(e) {
     }, scene);
 
     a = inverseProj(s.x, s.y);
+    console.log(a);
     setNode(findNearestPoint(s.x, s.y));
     if (handleUnderCursor) {
         e.stopPropagation()
@@ -226,7 +229,7 @@ function updateQueryString() {
 
 function findNearestPoint(x, y, maxDistanceToExplore = 2000) {
     if (!hetTestTree) return;
-
+    // console.log(hetTestTree.pointsAround(x, y, maxDistanceToExplore));
     let points = hetTestTree.pointsAround(x, y, maxDistanceToExplore).map(idx => graph.getNode(idx / 2))
         .sort((a, b) => {
             let da = pointDistance(a.data, x, y);
@@ -289,6 +292,15 @@ function updateSVGElements(svgConntainer) {
     document.getElementById("my_path").setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
     scale = svgConntainer.scale / scene.getPixelRatio();
     updatePathsStrokes();
+}
+
+function updatePathsStrokes() {
+    var allPaths = document.getElementsByClassName("car_path");
+    var strokeWidth = 6 / svgConntainerWays.scale;
+    for (let i = 0; i < allPaths.length; i++) {
+        const element = allPaths[i];
+        element.setAttributeNS(null, "stroke-width", strokeWidth + "px");
+    }
 }
 
 function findPath(fromId, toId) {
@@ -456,14 +468,7 @@ function setNode(point) {
     }
 }
 
-function updatePathsStrokes() {
-    var allPaths = document.getElementsByClassName("car_path");
-    var strokeWidth = 6 / svgConntainerWays.scale;
-    for (let i = 0; i < allPaths.length; i++) {
-        const element = allPaths[i];
-        element.setAttributeNS(null, "stroke-width", strokeWidth + "px");
-    }
-}
+
 
 function toPoint(p) { return p.x + ',' + p.y }
 // getRouteHandleUnderCursor,updateSVGElements
