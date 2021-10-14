@@ -20,5 +20,21 @@ canvas {
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
 }
+.chart-icon-button{
+  border-radius:100%;
+  /* width: 600px; */
+  width: 50px;
+  height: 50px;
+  background-size: cover!important;
+}
+.chart-icon-button:hover{
+  background-color: wheat!important;
+}
+.btn.btn-primary:hover{
+  background:initial!important;
+}
+.disp_none{
+  display: none!important;
+}
 
 /*# sourceMappingURL=styles.css.map */

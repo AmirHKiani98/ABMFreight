@@ -7,11 +7,21 @@ const makeScene = require("./createScene/createScene");
 const SVGContainer = require("./createScene/SVGContainer");
 const inverseProjector = require("./createInverseProjector");
 const CarHandler = require("./carHandler");
+
 // const npath = require('ngraph.path');
 const path = require("ngraph.path");
 const queryState = require('query-state');
 const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
+const ChartsContainer = require("./charts/chartsContainer");
+const addChart = require("./charts/addChart");
+mainChart = addChart("newName", "icon", "up", "newId");
+l = 0;
+$("body").click((event)=>{
+    l++;
+    y = l**2;
+    mainChart.updateWithoutFunction(l,y);
+})
 
 svgConntainerWays = null;
 startNodeCheck = false;
@@ -58,7 +68,6 @@ var tehran = loadPositions("maps/teh");
 var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
-    console.log(loaded.points)
     graph = loaded.graph;
     // console.log(graph);
     initPathfinders(graph);
@@ -143,7 +152,6 @@ function handleMouseDown(e) {
     }, scene);
 
     a = inverseProj(s.x, s.y);
-    console.log(a);
     setNode(findNearestPoint(s.x, s.y));
     if (handleUnderCursor) {
         e.stopPropagation()
