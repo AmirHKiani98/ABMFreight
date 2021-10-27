@@ -21,7 +21,7 @@ $("body").click((event)=>{
     l++;
     y = l**2;
     mainChart.updateWithoutFunction(l,y);
-})
+});
 
 svgConntainerWays = null;
 startNodeCheck = false;

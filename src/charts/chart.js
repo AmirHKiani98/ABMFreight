@@ -23,19 +23,34 @@ class ChartAK {
           tension: 0,
           showLine: true,
           yAxisID: "y1",
+          xAxisID: "x1",
         },
       ],
     };
     this.config = {
       type: "scatter",
-      responsive:true,
-     maintainAspectRatio: false,
+      // responsive:true,
+    //  maintainAspectRatio: false,
       data: this.data,
       options: {
+        maintainAspectRatio: false,
         scales: {
           y1: {
+            stacked: true,
+            grid: {
+              display: true,
+              color: "rgba(255,99,132,0.2)"
+            },
             display: true,
           },
+          x1:{
+            stacked: true,
+            grid:{
+              display:true,
+              color: "rgba(255,99,132,0.2)"
+            }
+          }
+
         },
       },
     };
@@ -43,9 +58,14 @@ class ChartAK {
     // Creating Canvas
     var canv = document.createElement("canvas");
     canv.id = id;
+
+    // Create Div
+    var div = document.createElement("div");
+    div.className = "inner-chart-container";
+    div.append(canv)
     // canv.style.width ='100%';
     // canv.style.height='100%';
-    $("#canvas-container").append(canv);
+    $("#canvas-container").append(div);
     var ctx = document.getElementById(id).getContext("2d"); // 2d context
     this.chart = new Chart(ctx, this.config);
     this.intervalTime = intervalTime;
