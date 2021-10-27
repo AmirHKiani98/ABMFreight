@@ -15,13 +15,13 @@ const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 const ChartsContainer = require("./charts/chartsContainer");
 const addChart = require("./charts/addChart");
-mainChart = addChart("newName", "icon", "up", "newId");
-l = 0;
-$("body").click((event)=>{
-    l++;
-    y = l**2;
-    mainChart.updateWithoutFunction(l,y);
-});
+// mainChart = addChart("newName", "icon", "up", "newId");
+// l = 0;
+// $("body").click((event)=>{
+//     l++;
+//     y = l**2;
+//     mainChart.updateWithoutFunction(l,y);
+// });
 
 svgConntainerWays = null;
 startNodeCheck = false;

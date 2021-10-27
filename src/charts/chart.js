@@ -71,6 +71,8 @@ class ChartAK {
     this.intervalTime = intervalTime;
     canv.className = "disp_none";
 
+    
+
   }
 
   triggerFunction(func) {
