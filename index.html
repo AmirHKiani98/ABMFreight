@@ -29,10 +29,10 @@
                 <!---->
             </div>
         </div>
-        <div id="app_functions">
+        <!-- <div id="app_functions">
             <button id="start_node">Start</button>
             <button id="stop_node">Stop</button>
-        </div>
+        </div> -->
     </div>
     <div id="right-part" class="position-absolute float-right d-flex flex-column align-items-center overflow-hidden">
         <div id="charts" class="d-flex flex-column w-100 p-2">
@@ -42,8 +42,13 @@
             </div>
         </div>
     </div>
-    <div id="canvas-container" class="position-absolute" style="bottom: 0;left: 0;width: 100%;height: 30%;background-color: rgba(61, 61, 61, 0.418);">
-    
+    <div class="d-flex flex-column position-absolute w-100 h-auto" style="bottom: 0;">
+        <a name="" id="close-charts" class="btn btn-primary m-2 d-flex align-items-center justify-content-center" style="height: 60px; width: 60px;" href="#" role="button">
+            <i class="fa fa-arrow-down" id="close-charts-icon" style="font-size: 20px;" aria-hidden="true"></i>            
+        </a>
+        <div id="canvas-container" class="position-absolutae height-zero" style="bottom: 0;left: 0;width: 100%;background-color: rgba(61, 61, 61, 0.418);transition-duration: 0.3s;">
+        
+        </div>
     </div>
     <div class="position-absolute float-right p-3" style="top:0;right:0">
         <!-- <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> -->

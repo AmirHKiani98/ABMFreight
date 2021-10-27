@@ -458,8 +458,8 @@ function stopNode(e) {
     stopNodeCheck = true;
     startNodeCheck = false;
 }
-document.getElementById("start_node").addEventListener("click", startNode);
-document.getElementById("stop_node").addEventListener("click", stopNode);
+// document.getElementById("start_node").addEventListener("click", startNode);
+// document.getElementById("stop_node").addEventListener("click", stopNode);
 
 function setNode(point) {
     if (stopNodeCheck == false && startNodeCheck == true && stopNodeCoord == null) {
