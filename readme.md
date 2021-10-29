@@ -48,7 +48,7 @@ The mentioned equations can be used for x direction. So we should have:
 
 But, do not forget, now we have the absolute values which are not completely the correct answers. in other words, the sign of direction has been neglected. so we just need to check if the diffrential in axis is positive or not. Then multiply this sign in the achieved equations. (No need to worry, it has been done in this package already!)
 ## ```Agents```
-Every Agent-Based package should provide its users with an API to handle the agents. In this regards, We've been working on this package to make it suitable and more simpler to users to work with. The function for handling agents are as bellow (we still are woking on some of them):
+Every Agent-Based package should provide its users with an API to handle the agents. In this regards, We've been working on this package to make it suitable and more simpler to users to work with. The function for handling agents are as bellow (we are still woking on some of them) :
 
 ### ```addAgent(lat, lng, funcHandler, id?, name?, data?)```
 ### ```addAgentByNodeId(nodeId, funcHandler, id?, name?, data?)```
@@ -66,6 +66,11 @@ This package triggers the agents (if needed) to the charts to plot their behavio
 
 ### ```triggerToChart(func, chartId)```
 This function triggers ```func``` function to the chart with ```chartId``` id. the function should return 
+
+## Add Data to Application
+
+
+
 
 ## Change Characteristics of the Map
 

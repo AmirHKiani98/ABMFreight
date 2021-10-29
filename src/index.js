@@ -7,7 +7,7 @@ const makeScene = require("./createScene/createScene");
 const SVGContainer = require("./createScene/SVGContainer");
 const inverseProjector = require("./createInverseProjector");
 const CarHandler = require("./carHandler");
-
+const findNearestPoint = require("./findNearestPoint");
 // const npath = require('ngraph.path');
 const path = require("ngraph.path");
 const queryState = require('query-state');
@@ -15,6 +15,8 @@ const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 const ChartsContainer = require("./charts/chartsContainer");
 const addChart = require("./charts/addChart");
+const intrepreter = require("./Intrepreter");
+console.log(intrepreter("../tempFiles/test.txt"));
 // mainChart = addChart("newName", "icon", "up", "newId");
 // l = 0;
 // $("body").click((event)=>{
@@ -152,7 +154,7 @@ function handleMouseDown(e) {
     }, scene);
 
     a = inverseProj(s.x, s.y);
-    setNode(findNearestPoint(s.x, s.y));
+    setNode(findNearestPoint(s.x, s.y, hetTestTree));
     if (handleUnderCursor) {
         e.stopPropagation()
         e.preventDefault()
@@ -183,7 +185,7 @@ function handleSceneClick(e) {
 function setRoutePointFormEvent(e, routePointViewModel) {
     if (!hetTestTree) return; // we are not initialized yet.
 
-    let point = findNearestPoint(e.sceneX, e.sceneY)
+    let point = findNearestPoint(e.sceneX, e.sceneY, hetTestTree)
     if (!point) throw new Error('Point should be defined at this moment');
 
     routePointViewModel.setFrom(point);
@@ -232,25 +234,6 @@ function updateQueryString() {
             qs.set('toId', toId);
         }
     }, 400);
-}
-
-
-function findNearestPoint(x, y, maxDistanceToExplore = 2000) {
-    if (!hetTestTree) return;
-    // console.log(hetTestTree.pointsAround(x, y, maxDistanceToExplore));
-    let points = hetTestTree.pointsAround(x, y, maxDistanceToExplore).map(idx => graph.getNode(idx / 2))
-        .sort((a, b) => {
-            let da = pointDistance(a.data, x, y);
-            let db = pointDistance(b.data, x, y)
-            return da - db;
-        });
-
-    if (points.length > 0) {
-        return points[0];
-    } else {
-        // keep trying.
-        return findNearestPoint(x, y, maxDistanceToExplore * 2);
-    }
 }
 
 function pointDistance(src, x, y) {

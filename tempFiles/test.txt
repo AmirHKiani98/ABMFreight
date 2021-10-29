@@ -1,0 +1,2 @@
+add_agent type_agent data{}
+add_chart trigger_chart
