@@ -1,2 +1,2 @@
-add_agent type_agent data{}
-add_chart trigger_chart
+add_agent driver {start_lon: 51.28954274125356, start_lan: 35.71774139394975, start_lat: 51.34205089081785, end_lat: 35.74243011411434, speed: 13.9}
+add_agent driver {start_lon: 51.338238002409696, start_lan: 35.6838421704837, start_lat: 51.35018025666922, end_lat: 35.68584351582838, speed: 13.9}

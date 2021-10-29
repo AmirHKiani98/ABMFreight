@@ -153,8 +153,11 @@ function handleMouseDown(e) {
         sceneY: s.y
     }, scene);
 
-    a = inverseProj(s.x, s.y);
-    setNode(findNearestPoint(s.x, s.y, hetTestTree));
+    let a = inverseProj(s.x, s.y);
+    let myNode = findNearestPoint(s.x, s.y, hetTestTree, graph);
+    console.log(inverseProj(myNode.data.x, myNode.data.y));
+    console.log(s.x, s.y);
+    setNode(findNearestPoint(s.x, s.y, hetTestTree, graph));
     if (handleUnderCursor) {
         e.stopPropagation()
         e.preventDefault()
@@ -185,7 +188,7 @@ function handleSceneClick(e) {
 function setRoutePointFormEvent(e, routePointViewModel) {
     if (!hetTestTree) return; // we are not initialized yet.
 
-    let point = findNearestPoint(e.sceneX, e.sceneY, hetTestTree)
+    let point = findNearestPoint(e.sceneX, e.sceneY, hetTestTree, graph)
     if (!point) throw new Error('Point should be defined at this moment');
 
     routePointViewModel.setFrom(point);
@@ -236,11 +239,6 @@ function updateQueryString() {
     }, 400);
 }
 
-function pointDistance(src, x, y) {
-    let dx = src.x - x;
-    let dy = src.y - y;
-    return Math.sqrt(dx * dx + dy * dy);
-}
 
 function initHitTestTree(loadedPoints) {
     hetTestTree = createTree();
