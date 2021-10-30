@@ -1,10 +1,13 @@
 const readFile = require("./readFile");
 const createProjector = require("./pointToMapCoordinates");
 const Agent = require("./agents/Agent");
+const makeCircle = require("./makeCircle");
+
 function intrepreter(mainFileAddress, bondFileAddress, graph){
     readFile(mainFileAddress).then(function(e){
         let lines = e.split(/\r?\n/);
         let projector = createProjector(bondFileAddress);
+        console.log(projector);
         let agents = [];
         for (let i = 0; i < lines.length; i++) {
             const element = lines[i];
@@ -23,13 +26,22 @@ function intrepreter(mainFileAddress, bondFileAddress, graph){
                         const element2 = tempData[j];
                         let tempIndex = element2.groups.index;
                         let tempValue = element2.groups.value;
+                        
                         agent.addData(tempIndex, tempValue);
                     }
                     agents.push(agent);
                 }
             }
         }
-        console.log(agents)
+        for (let index = 0; index < agents.length; index++) {
+            const element = agents[index];
+            let start_lan = element.data["start_lan"];
+            // for(key in element.data){
+            //     let value = element.data[key];
+            //     if(key == "start_lon" || key == "start_lat" || key == "end_lon" || key == "end_lat"){
+            //     }
+            // }
+        }
 
     });
 }

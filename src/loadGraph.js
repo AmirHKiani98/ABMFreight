@@ -45,18 +45,18 @@ function loadPositions(filePath, progress) {
 
     function setPositions(buffer) {
         points = new Int32Array(buffer);
-        console.log('Downloaded nodes: ' + points.length / 2);
+        // console.log('Downloaded nodes: ' + points.length / 2);
         return initNodes(points);
     }
 
     function initNodes(points) {
-        console.time('add nodes to graph');
+        // console.time('add nodes to graph');
         //progress.message = 'Adding nodes to graph';
 
         return new Promise((resolve) => {
             asyncFor(points, addPointToGraph, () => {
                 //progress.pointsReady = true;
-                console.timeEnd('add nodes to graph');
+                // console.timeEnd('add nodes to graph');
                 resolve();
             }, { step: 2 });
 
@@ -87,12 +87,12 @@ function loadPositions(filePath, progress) {
         links = new Int32Array(buffer);
 
         //progress.message = 'Adding edges to graph'
-        console.time('add edges to graph');
+        // console.time('add edges to graph');
         return new Promise((resolve) => {
             asyncFor(links, addLinkToGraph, () => {
-                console.timeEnd('add edges to graph');
+                // console.timeEnd('add edges to graph');
                 //progress.linksReady = true;
-                console.log(graph.getLinksCount() + ' edges; ' + graph.getNodesCount() + ' nodes.')
+                // console.log(graph.getLinksCount() + ' edges; ' + graph.getNodesCount() + ' nodes.')
                 resolve();
             }, { step: 2 });
         });

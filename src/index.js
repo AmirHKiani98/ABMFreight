@@ -16,7 +16,7 @@ const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 const ChartsContainer = require("./charts/chartsContainer");
 const addChart = require("./charts/addChart");
 const intrepreter = require("./Intrepreter");
-console.log(intrepreter("../tempFiles/test.txt"));
+const makeCircle = require("./makeCircle");
 // mainChart = addChart("newName", "icon", "up", "newId");
 // l = 0;
 // $("body").click((event)=>{
@@ -154,9 +154,10 @@ function handleMouseDown(e) {
     }, scene);
 
     let a = inverseProj(s.x, s.y);
+    console.log(s);
     let myNode = findNearestPoint(s.x, s.y, hetTestTree, graph);
-    console.log(inverseProj(myNode.data.x, myNode.data.y));
-    console.log(s.x, s.y);
+    // console.log(inverseProj(myNode.data.x, myNode.data.y));
+    // console.log(s.x, s.y);
     setNode(findNearestPoint(s.x, s.y, hetTestTree, graph));
     if (handleUnderCursor) {
         e.stopPropagation()
@@ -364,7 +365,7 @@ function getSvgPath(points) {
     return points.map((pt, index) => {
         let prefix = (index === 0) ? 'M' : '';
         if (index == 0) {
-            makeCircle(pt.x, pt.y, points);
+            makeCircle(pt.x, pt.y, points, carHandler);
         }
 
         return prefix + toPoint(pt);
@@ -395,20 +396,7 @@ function checkCar() {
 
 window.requestAnimationFrame(checkCar);
 
-function makeCircle(x, y, points) {
-    g = document.getElementById("my_g");
-    var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", x);
-    circle.setAttribute("cy", y);
-    circle.setAttribute("r", 40);
-    circle.setAttribute("stroke", "green");
-    circle.setAttribute("stroke-width", "4");
-    circle.setAttribute("fill", "yellow");
-    carHandler.addCar(points);
-    lastCarId = carHandler.getLastCarId();
-    circle.setAttribute("id", "circle_" + lastCarId);
-    g.appendChild(circle);
-}
+
 
 function makeWay(fromId, toId) {
     let path = findPath(fromId, toId);
@@ -458,6 +446,13 @@ function setNode(point) {
 }
 
 
-
 function toPoint(p) { return p.x + ',' + p.y }
+
+
+
+intrepreter("../tempFiles/test.txt", "../maps/teh.bond.json");
+
+
+
+
 // getRouteHandleUnderCursor,updateSVGElements
