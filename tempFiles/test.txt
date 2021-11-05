@@ -1,2 +1,2 @@
-add_agent driver {start_lon: 51.28954274125356, start_lat: 35.71774139394975, end_lon: 51.34205089081785, end_lat: 35.74243011411434, speed: 13.9}
+add_agent driver {start_lon: 51.28768066402585, start_lat: 35.70227629323484, end_lon: 51.34205089081785, end_lat: 35.74243011411434, speed: 13.9}
 add_agent driver {start_lon: 51.33823800240969, start_lat: 35.68384217048372, end_lon: 51.35018025666922, end_lat: 35.68584351582838, speed: 13.9}

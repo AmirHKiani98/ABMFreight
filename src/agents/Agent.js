@@ -7,6 +7,7 @@ class Agent {
     } else {
       this.data = data;
     }
+    this.path = null;
   }
   addData(index, value) {
     this.data[index] = value;

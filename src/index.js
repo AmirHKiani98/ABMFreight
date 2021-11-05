@@ -71,6 +71,7 @@ var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
     graph = loaded.graph;
+    intrepreter("../tempFiles/test.txt", "../maps/teh.bond.json", graph, hetTestTree);
     // console.log(graph);
     initPathfinders(graph);
     bbox = loaded.graphBBox;
@@ -155,6 +156,7 @@ function handleMouseDown(e) {
 
     let a = inverseProj(s.x, s.y);
     console.log(s);
+    console.log(a);
     let myNode = findNearestPoint(s.x, s.y, hetTestTree, graph);
     // console.log(inverseProj(myNode.data.x, myNode.data.y));
     // console.log(s.x, s.y);
@@ -450,7 +452,6 @@ function toPoint(p) { return p.x + ',' + p.y }
 
 
 
-intrepreter("../tempFiles/test.txt", "../maps/teh.bond.json");
 
 
 

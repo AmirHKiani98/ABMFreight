@@ -2,13 +2,31 @@ const readFile = require("./readFile");
 const createProjector = require("./pointToMapCoordinates");
 const Agent = require("./agents/Agent");
 const makeCircle = require("./makeCircle");
+const findNearestPoint = require("./findNearestPoint");
+const path = require("ngraph.path");
 
-function intrepreter(mainFileAddress, bondFileAddress, graph){
+
+function distance(a, b) {
+    return dataDistance(a.data, b.data);
+}
+
+function dataDistance(a, b) {
+    let dx = a.x - b.x;
+    let dy = a.y - b.y;
+
+    return Math.sqrt(dx * dx + dy * dy)
+}
+
+function intrepreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data){
+    let pathFinder = path.nba(graph,{
+        distance: distance,
+        heuristic: distance
+    })
     readFile(mainFileAddress).then(function(e){
         let lines = e.split(/\r?\n/);
-        let projector = createProjector(bondFileAddress);
-        console.log(projector);
-        let agents = [];
+        let projector;;
+        
+        var agents = [];
         for (let i = 0; i < lines.length; i++) {
             const element = lines[i];
             let reg1 = /(?<action>[a-zA-Z_]+)\s+(?<type>[a-zA-Z_]+)\s+(?<data>{(?<inner_data>(\s)?(?<index>[a-zA-Z_]+):\s(?<value>[a-zA-Z_0-9\.]+)(,)?)+})/gm;
@@ -25,24 +43,37 @@ function intrepreter(mainFileAddress, bondFileAddress, graph){
                     for (let j = 0; j < tempData.length; j++) {
                         const element2 = tempData[j];
                         let tempIndex = element2.groups.index;
+                        console.log(element2.groups.index);
                         let tempValue = element2.groups.value;
                         
                         agent.addData(tempIndex, tempValue);
                     }
                     agents.push(agent);
                 }
+                else if(action == ""){
+
+                }
             }
         }
-        for (let index = 0; index < agents.length; index++) {
-            const element = agents[index];
-            let start_lan = element.data["start_lan"];
-            // for(key in element.data){
-            //     let value = element.data[key];
-            //     if(key == "start_lon" || key == "start_lat" || key == "end_lon" || key == "end_lat"){
-            //     }
-            // }
-        }
+        createProjector(bondFileAddress).then((results)=>{
+            projector = results;
+            for (let index = 0; index < agents.length; index++) {
+                const element = agents[index];
+                let start_lat = element.data["start_lat"];
+                let start_lon = element.data["start_lon"];
+                let startConverted = projector(start_lon, start_lat);
+                let startNearestPoint = findNearestPoint(startConverted.x, startConverted.y, hetTestTree, graph)
 
+                let end_lat = element.data["end_lat"];
+                let end_lon = element.data["end_lon"];
+                let endConverted = projector(end_lon, end_lat);
+                let endNearestPoint = findNearestPoint(startConverted.x, startConverted.y, hetTestTree, graph)
+
+                let foundPath = pathFinder.find(startNearestPoint.id, endNearestPoint.id);
+                agents[index].path = foundPath;
+                let speed = element.data["speed"];
+            }
+        });
     });
 }
 // intrepreter("E:\Scripts\Github\FABMPackages\visualizer\tempFiles\test.txt")
