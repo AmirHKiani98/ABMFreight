@@ -43,7 +43,6 @@ function intrepreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data)
                     for (let j = 0; j < tempData.length; j++) {
                         const element2 = tempData[j];
                         let tempIndex = element2.groups.index;
-                        console.log(element2.groups.index);
                         let tempValue = element2.groups.value;
                         
                         agent.addData(tempIndex, tempValue);
