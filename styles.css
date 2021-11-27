@@ -1,18 +1,10 @@
-*{
-  color: wheat;
-}
 body,
-#my_canvas {
+canvas {
   margin: 0;
   padding: 0;
   position: absolute;
   width: 100%;
   height: 100%;
-}
-body{
-  
-  height: 100vh;
-  overflow-y: hidden;
 }
 
 #right-part {
@@ -24,32 +16,5 @@ body{
   background-color: rgba(0, 0, 0, 0.233);
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
-}
-.chart-icon-button{
-  border-radius:100%;
-  /* width: 600px; */
-  width: 50px;
-  height: 50px;
-  background-size: cover!important;
-}
-.chart-icon-button:hover{
-  background-color: wheat!important;
-}
-.btn.btn-primary:hover{
-  background:initial!important;
-}
-.disp_none{
-  display: none!important;
-}
-.inner-chart-container{
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.height-zero{
-  height: 0;
-}
-.height-3{
-  height: 300px;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -17,12 +17,12 @@ function dataDistance(a, b) {
     return Math.sqrt(dx * dx + dy * dy)
 }
 
-function intrepreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data){
+function interpreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data){
     let pathFinder = path.nba(graph,{
         distance: distance,
         heuristic: distance
     })
-    readFile(mainFileAddress).then(function(e){
+    return readFile(mainFileAddress).then(function(e){
         let lines = e.split(/\r?\n/);
         let projector;;
         
@@ -54,7 +54,7 @@ function intrepreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data)
                 }
             }
         }
-        createProjector(bondFileAddress).then((results)=>{
+        return createProjector(bondFileAddress).then((results)=>{
             projector = results;
             for (let index = 0; index < agents.length; index++) {
                 const element = agents[index];
@@ -66,20 +66,21 @@ function intrepreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data)
                 let end_lat = element.data["end_lat"];
                 let end_lon = element.data["end_lon"];
                 let endConverted = projector(end_lon, end_lat);
-                let endNearestPoint = findNearestPoint(startConverted.x, startConverted.y, hetTestTree, graph)
+                let endNearestPoint = findNearestPoint(endConverted.x, endConverted.y, hetTestTree, graph)
 
-                let foundPath = pathFinder.find(startNearestPoint.id, endNearestPoint.id);
+                let foundPath = pathFinder.find(startNearestPoint.id, endNearestPoint.id).map(l => l.data);
                 agents[index].path = foundPath;
                 let speed = element.data["speed"];
             }
+            return {agents};
         });
     });
 }
-// intrepreter("E:\Scripts\Github\FABMPackages\visualizer\tempFiles\test.txt")
+// interpreter("E:\Scripts\Github\FABMPackages\visualizer\tempFiles\test.txt")
 
 // let reg1 = /(?<inner_data>(\s)?(?<index>[a-zA-Z_]+):\s(?<value>[a-zA-Z_0-9\.]+))/gm;
 // let text = `add_agent driver {start_lon: 51.28954274125356, start_lan: 35.71774139394975, start_lat: 51.34205089081785, end_lat: 35.74243011411434, speed: 13.9}\nadd_agent driver {start_lon: 51.338238002409696, start_lan: 35.6838421704837, start_lat: 51.35018025666922, end_lat: 35.68584351582838, speed: 13.9}`
 // let lines = text.split(/\r?\n/);
 // let match = [...lines[0].matchAll(reg1)];
 // console.log(match);
-module.exports = intrepreter;
+module.exports = interpreter;

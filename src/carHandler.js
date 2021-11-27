@@ -94,7 +94,6 @@ class CarHandler {
                     this.cars[i].startPosition = car.data[this.cars[i].startPositionIndex];
                     this.cars[i].stopPosition = car.data[this.cars[i].startPositionIndex + 1];
                     let velocity = this.cars[i].velocity;
-                    console.log(velocity);
                     this.cars[i].currentFormula = this.updateEquation(this.cars[i].startPosition, this.cars[i].stopPosition, this.cars[i].startPosition, velocity);
                     break;
                 } else {}

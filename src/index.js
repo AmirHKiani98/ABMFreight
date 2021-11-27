@@ -15,7 +15,7 @@ const pointToMapProjector = require("./pointToMapCoordinates");
 const RouteHandleViewModel = require("./createScene/RouteHandleViewModel");
 const ChartsContainer = require("./charts/chartsContainer");
 const addChart = require("./charts/addChart");
-const intrepreter = require("./Intrepreter");
+const interpreter = require("./interpreter");
 const makeCircle = require("./makeCircle");
 // mainChart = addChart("newName", "icon", "up", "newId");
 // l = 0;
@@ -71,7 +71,23 @@ var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
     graph = loaded.graph;
-    intrepreter("../tempFiles/test.txt", "../maps/teh.bond.json", graph, hetTestTree);
+    interpreter("../tempFiles/test.txt", "../maps/teh.bond.json", graph, hetTestTree).then((loaded2)=>{
+        let agents = loaded2.agents;
+        agents.forEach(agent => {
+            let svgPath = getSvgPath(agent.path);
+            let pathSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            pathSvgElement.setAttribute("d", svgPath);
+            pathSvgElement.setAttribute("stroke", "blue");
+            pathSvgElement.setAttribute("fill", "transparent");
+            strokeWidth = 6 / svgConntainerWays.scale;
+            pathSvgElement.setAttributeNS(null, 'stroke-width', strokeWidth + 'px');
+            pathSvgElement.setAttribute("class", "car_path");
+        
+            g = document.getElementById("my_g");
+            g.insertBefore(pathSvgElement, g.lastChild);
+            // makeCircle(parseFloat(agent.data.start_lat), parseFloat(agent.data.start_lon), agent.path, carHandler);
+        });
+    });
     // console.log(graph);
     initPathfinders(graph);
     bbox = loaded.graphBBox;
@@ -102,14 +118,14 @@ function createScene() {
     scene.setClearColor(16 / 255, 16 / 255, 16 / 255, 1);
     //scene.setClearColor(1, 1, 1, 1)
 
-    let initialSceneSize = bbox.width / 8;
+    let initialSceneSize = bbox.width / 16;
     scene.setViewBox({
         left: -initialSceneSize,
         top: -initialSceneSize,
         right: initialSceneSize,
         bottom: initialSceneSize,
     })
-
+    console.log(scene);
 
     let linksCount = graph.getLinksCount();
     let lines = new wgl.WireCollection(linksCount);
@@ -123,17 +139,17 @@ function createScene() {
 
     scene.appendChild(lines);
 
-    scene.on('mousemove', onMouseMoveOverScene, this);
-    scene.on('click', handleSceneClick, this);
+    // scene.on('mousemove', onMouseMoveOverScene, this);
+    // scene.on('click', handleSceneClick, this);
 
-    document.body.addEventListener('mousedown', handleMouseDown, true);
-    document.body.addEventListener('touchstart', handleMouseDown, true);
+    // document.body.addEventListener('mousedown', handleMouseDown, true);
+    // document.body.addEventListener('touchstart', handleMouseDown, true);
 }
 
 
 function unsubscribeMoveEvents() {
-    document.body.removeEventListener('mousedown', handleMouseDown, true);
-    document.body.removeEventListener('touchstart', handleMouseDown, true);
+    // document.body.removeEventListener('mousedown', handleMouseDown, true);
+    // document.body.removeEventListener('touchstart', handleMouseDown, true);
 }
 
 
@@ -155,7 +171,9 @@ function handleMouseDown(e) {
     }, scene);
 
     let a = inverseProj(s.x, s.y);
-    console.log(s);
+    // console.log(s);
+    ax = a.x;
+    ay = a.y;
     console.log(a);
     let myNode = findNearestPoint(s.x, s.y, hetTestTree, graph);
     // console.log(inverseProj(myNode.data.x, myNode.data.y));
