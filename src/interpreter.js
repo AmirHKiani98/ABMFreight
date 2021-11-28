@@ -68,7 +68,7 @@ function interpreter(mainFileAddress, bondFileAddress, graph, hetTestTree, data)
                 let endConverted = projector(end_lon, end_lat);
                 let endNearestPoint = findNearestPoint(endConverted.x, endConverted.y, hetTestTree, graph)
 
-                let foundPath = pathFinder.find(startNearestPoint.id, endNearestPoint.id).map(l => l.data);
+                let foundPath = pathFinder.find(endNearestPoint.id, startNearestPoint.id).map(l => l.data);
                 agents[index].path = foundPath;
                 let speed = element.data["speed"];
             }

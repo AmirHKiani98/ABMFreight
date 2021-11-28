@@ -34,10 +34,9 @@ window.path = path;
 window.wgl = wgl;
 window.loadPositions = loadPositions;
 window.createTree = createTree;
-
+var carHandler = null;
 
 var time = new Date();
-var carHandler = new CarHandler(0.1);
 var prevHandle = null;
 var pathInfo = {
     svgPath: '',
@@ -71,6 +70,15 @@ var projector = null;
 tehran.then((loaded) => {
     initHitTestTree(loaded.points);
     graph = loaded.graph;
+    
+    // console.log(graph);
+    initPathfinders(graph);
+    bbox = loaded.graphBBox;
+    createScene();
+    inverseProjector("./maps/teh.bond.json").then((projector) => {
+        inverseProj = projector;
+        carHandler = new CarHandler(inverseProj);
+    });
     interpreter("../tempFiles/test.txt", "../maps/teh.bond.json", graph, hetTestTree).then((loaded2)=>{
         let agents = loaded2.agents;
         agents.forEach(agent => {
@@ -85,15 +93,9 @@ tehran.then((loaded) => {
         
             g = document.getElementById("my_g");
             g.insertBefore(pathSvgElement, g.lastChild);
-            // makeCircle(parseFloat(agent.data.start_lat), parseFloat(agent.data.start_lon), agent.path, carHandler);
+            makeCircle(agent.path[0].x, agent.path[0].y , agent.path, carHandler,  50, 50, 2.5);
         });
-    });
-    // console.log(graph);
-    initPathfinders(graph);
-    bbox = loaded.graphBBox;
-    createScene();
-    inverseProjector("./maps/teh.bond.json").then((projector) => {
-        inverseProj = projector;
+        window.requestAnimationFrame(checkCar);
     });
     pointToMapProjector("./maps/teh.bond.json").then((projector) => {
         mainProj = projector;
@@ -118,7 +120,7 @@ function createScene() {
     scene.setClearColor(16 / 255, 16 / 255, 16 / 255, 1);
     //scene.setClearColor(1, 1, 1, 1)
 
-    let initialSceneSize = bbox.width / 16;
+    let initialSceneSize = bbox.width / 20;
     scene.setViewBox({
         left: -initialSceneSize,
         top: -initialSceneSize,
@@ -385,7 +387,7 @@ function getSvgPath(points) {
     return points.map((pt, index) => {
         let prefix = (index === 0) ? 'M' : '';
         if (index == 0) {
-            makeCircle(pt.x, pt.y, points, carHandler);
+            // makeCircle(pt.x, pt.y, points, carHandler);
         }
 
         return prefix + toPoint(pt);
@@ -398,6 +400,7 @@ function numberWithCommas(x) {
 
 function checkCar() {
     miliSecondsTime = Date.now();
+    console.log(carHandler);
     carHandler.cars.forEach(element => {
         check = carHandler.checkPassTheStopPoint(element.startPosition, element.stopPosition, element.currentPosition);
         if (check) {
@@ -414,7 +417,6 @@ function checkCar() {
     window.requestAnimationFrame(checkCar);
 }
 
-window.requestAnimationFrame(checkCar);
 
 
 

@@ -1,10 +1,10 @@
 const Car = require("./car");
 class CarHandler {
-    constructor(v) {
+    constructor(projector) {
         this.cars = [];
         this.lastCarId = 0;
-        this.v = v;
         this.lastTime = Date.now();
+        this.projector = projector;
     }
     addCar(data, fuelConsumption = 50, currentFuel = 50, velocity = 0.1) {
         // let newCar = { id: this.getNewId(), startPositionIndex: 0, startPosition: data[0], stopPosition: data[1], currentPosition: data[0], currentFormula: this.updateEquation(data[0], data[1], data[0], this.v), data: data };
