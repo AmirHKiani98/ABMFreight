@@ -88,12 +88,21 @@ class CarHandler {
             return false;
         }
     }
-    degreeToRadian(degrees)
-    {
-    var pi = Math.PI;
-    return degrees * (pi/180);
+    degreeToRadian(degrees){
+        var pi = Math.PI;
+        return degrees * (pi/180);
     }
-
+    getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2){
+        R = 6371 // Radius of the earth in km
+        dLat = this.degreeToRadian(lat2-lat1)
+        dLon = this.degreeToRadian(lon2-lon1)
+        rLat1 = this.degreeToRadian(lat1)
+        rLat2 = this.degreeToRadian(lat2)
+        a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLon/2) * Math.sin(dLon/2) 
+        c = 2 * Math.atan2(sqrt(a), sqrt(1-a))
+        d = R * c // Distance in km
+        return d
+    }
     
 
     updateCarStartStopPosition(carId) {
