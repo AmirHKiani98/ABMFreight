@@ -40,6 +40,9 @@ class CarHandler {
         var y0 = startPosition.y;
         var x1 = stopPosition.x;
         var y1 = stopPosition.y;
+        let firstNodeProjected = this.projector(x0, y0);
+        let secondNodeProjected = this.projector(x1,y1);
+
         var lastTime = this.lastTime;
         var currentX = currentPosition.x;
         var currentY = currentPosition.y;
@@ -85,6 +88,14 @@ class CarHandler {
             return false;
         }
     }
+    degreeToRadian(degrees)
+    {
+    var pi = Math.PI;
+    return degrees * (pi/180);
+    }
+
+    
+
     updateCarStartStopPosition(carId) {
         for (let i = 0; i < this.cars.length; i++) {
             var car = this.cars[i];

@@ -17,7 +17,7 @@ function createProjector(fileAddress, r) {
             q[1] = lat;
 
             let xyPoint = projector.invert(q)
-
+            console.log(projector);
             return {
                 x: xyPoint[0],
                 y: xyPoint[1]

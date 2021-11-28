@@ -93,7 +93,7 @@ tehran.then((loaded) => {
         
             g = document.getElementById("my_g");
             g.insertBefore(pathSvgElement, g.lastChild);
-            makeCircle(agent.path[0].x, agent.path[0].y , agent.path, carHandler,  50, 50, 2.5);
+            makeCircle(agent.path[0].x, agent.path[0].y , agent.path, carHandler,  50, 50, 1.5);
         });
         window.requestAnimationFrame(checkCar);
     });
@@ -400,7 +400,6 @@ function numberWithCommas(x) {
 
 function checkCar() {
     miliSecondsTime = Date.now();
-    console.log(carHandler);
     carHandler.cars.forEach(element => {
         check = carHandler.checkPassTheStopPoint(element.startPosition, element.stopPosition, element.currentPosition);
         if (check) {
